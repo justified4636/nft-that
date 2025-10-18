@@ -2,6 +2,7 @@ import { useTonAddress } from "@tonconnect/ui-react";
 import { useCallback, useEffect, useState } from "react";
 import { contractService } from "@/lib/contract/contractService";
 import { addressesEqual } from "@/lib/utils/address";
+import { ADMIN_WALLET_ADDRESS } from "@/lib/constants";
 import type { ContractState } from "@/types";
 
 export const useContractState = () => {
@@ -25,13 +26,20 @@ export const useContractState = () => {
         setIsOwner(owner);
 
         const admin = await contractService.isAdmin(userAddress);
-        setIsAdmin(admin || owner);
+        // Check if user is the hardcoded admin wallet
+        const isHardcodedAdmin = addressesEqual(
+          userAddress,
+          ADMIN_WALLET_ADDRESS,
+        );
+        setIsAdmin(admin || owner || isHardcodedAdmin);
       } else {
         setIsOwner(false);
         setIsAdmin(false);
       }
-    } catch (err: any) {
-      setError(err?.message || "Failed to fetch contract state");
+    } catch (err: unknown) {
+      const errorMsg =
+        err instanceof Error ? err.message : "Failed to fetch contract state";
+      setError(errorMsg);
       console.error("Contract state error:", err);
     } finally {
       setLoading(false);

@@ -22,8 +22,9 @@ export const useContract = () => {
           success: true,
           hash: result.boc,
         };
-      } catch (err: any) {
-        const errorMsg = err?.message || "Transaction failed";
+      } catch (err: unknown) {
+        const errorMsg =
+          err instanceof Error ? err.message : "Transaction failed";
         setError(errorMsg);
         console.error("Mint error:", err);
         return {
@@ -51,8 +52,9 @@ export const useContract = () => {
           success: true,
           hash: result.boc,
         };
-      } catch (err: any) {
-        const errorMsg = err?.message || "Transaction failed";
+      } catch (err: unknown) {
+        const errorMsg =
+          err instanceof Error ? err.message : "Transaction failed";
         setError(errorMsg);
         console.error("Add admin error:", err);
         return {

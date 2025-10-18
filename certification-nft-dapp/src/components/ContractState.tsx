@@ -47,13 +47,27 @@ export const ContractState = () => {
           <div className="bg-gradient-to-br from-blue-50 to-blue-100 p-4 rounded-lg border border-blue-200">
             <div className="flex items-center gap-3 mb-2">
               <div className="p-2 bg-blue-600 rounded-lg">
-                <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                <svg
+                  className="w-5 h-5 text-white"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                  />
                 </svg>
               </div>
               <div>
-                <p className="text-sm font-medium text-blue-900">Total Minted</p>
-                <p className="text-2xl font-bold text-blue-700">{contractState.total.toString()}</p>
+                <p className="text-sm font-medium text-blue-900">
+                  Total Minted
+                </p>
+                <p className="text-2xl font-bold text-blue-700">
+                  {contractState.total.toString()}
+                </p>
               </div>
             </div>
           </div>
@@ -61,13 +75,27 @@ export const ContractState = () => {
           <div className="bg-gradient-to-br from-green-50 to-green-100 p-4 rounded-lg border border-green-200">
             <div className="flex items-center gap-3 mb-2">
               <div className="p-2 bg-green-600 rounded-lg">
-                <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                <svg
+                  className="w-5 h-5 text-white"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M13 10V3L4 14h7v7l9-11h-7z"
+                  />
                 </svg>
               </div>
               <div>
-                <p className="text-sm font-medium text-green-900">Next Token ID</p>
-                <p className="text-2xl font-bold text-green-700">{contractState.nextId.toString()}</p>
+                <p className="text-sm font-medium text-green-900">
+                  Next Token ID
+                </p>
+                <p className="text-2xl font-bold text-green-700">
+                  {contractState.nextId.toString()}
+                </p>
               </div>
             </div>
           </div>
@@ -75,8 +103,18 @@ export const ContractState = () => {
           <div className="bg-gradient-to-br from-purple-50 to-purple-100 p-4 rounded-lg border border-purple-200">
             <div className="flex items-center gap-3 mb-2">
               <div className="p-2 bg-purple-600 rounded-lg">
-                <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                <svg
+                  className="w-5 h-5 text-white"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
+                  />
                 </svg>
               </div>
               <div>
@@ -92,7 +130,9 @@ export const ContractState = () => {
         <div className="mt-6 pt-6 border-t">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
-              <p className="text-sm font-medium text-gray-700 mb-2">Contract Address</p>
+              <p className="text-sm font-medium text-gray-700 mb-2">
+                Contract Address
+              </p>
               <p className="text-xs text-gray-900 font-mono break-all bg-gray-50 p-3 rounded-lg border">
                 {CONTRACT_ADDRESS}
               </p>

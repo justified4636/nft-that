@@ -28,8 +28,9 @@ export const useMetadata = () => {
       const metadata: NFTMetadata = await response.json();
 
       return { token, metadata };
-    } catch (err: any) {
-      const errorMsg = err?.message || "Failed to fetch token";
+    } catch (err: unknown) {
+      const errorMsg =
+        err instanceof Error ? err.message : "Failed to fetch token";
       setError(errorMsg);
       console.error("Metadata fetch error:", err);
       throw err;
