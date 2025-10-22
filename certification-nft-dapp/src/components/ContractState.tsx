@@ -8,7 +8,7 @@ export const ContractState = () => {
   if (loading) {
     return (
       <div className="bg-gray-800 rounded-2xl shadow-md border border-gray-700 p-4 sm:p-6">
-        <h2 className="text-xl font-bold mb-4">Contract State</h2>
+        <h2 className="text-xl font-bold mb-4">Contract Overview</h2>
         <div className="animate-pulse space-y-4">
           <div className="h-4 bg-gray-700 rounded w-1/4"></div>
           <div className="h-4 bg-gray-700 rounded w-1/2"></div>
@@ -21,9 +21,9 @@ export const ContractState = () => {
   if (error) {
     return (
       <div className="bg-gray-800 rounded-2xl shadow-md border border-gray-700 p-4 sm:p-6">
-        <h2 className="text-xl font-bold mb-4">Contract State</h2>
+        <h2 className="text-xl font-bold mb-4">Contract Overview</h2>
         <div className="p-4 bg-red-900/50 border border-red-700 rounded-lg">
-          <p className="text-sm text-red-300">{error}</p>
+          <p className="text-sm text-red-300">Error fetching contract data: {error}</p>
         </div>
       </div>
     );
@@ -32,15 +32,15 @@ export const ContractState = () => {
   if (!contractState) {
     return (
       <div className="bg-gray-800 rounded-2xl shadow-md border border-gray-700 p-4 sm:p-6">
-        <h2 className="text-xl font-bold mb-4">Contract State</h2>
-        <p className="text-gray-400">Unable to load</p>
+        <h2 className="text-xl font-bold mb-4">Contract Overview</h2>
+        <p className="text-gray-400">Data unavailable</p>
       </div>
     );
   }
 
   return (
     <div className="bg-gray-800 rounded-2xl shadow-md border border-gray-700 p-4 sm:p-6">
-      <h2 className="text-xl font-bold mb-4">Contract State</h2>
+      <h2 className="text-xl font-bold mb-4">Contract Overview</h2>
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         <div className="bg-gradient-to-br from-purple-900/50 to-purple-800/50 p-4 rounded-lg border border-purple-700">
           <div className="flex items-center gap-3 mb-2">
@@ -62,9 +62,7 @@ export const ContractState = () => {
               </svg>
             </div>
             <div>
-              <p className="text-sm font-medium text-purple-200">
-                Total Minted
-              </p>
+              <p className="text-sm font-medium text-purple-200">Total Issued</p>
               <p className="text-2xl font-bold text-purple-100">
                 {contractState.total.toString()}
               </p>
@@ -91,7 +89,7 @@ export const ContractState = () => {
               </svg>
             </div>
             <div>
-              <p className="text-sm font-medium text-pink-200">Next Token ID</p>
+              <p className="text-sm font-medium text-pink-200">Next Available Token</p>
               <p className="text-2xl font-bold text-pink-100">
                 {contractState.nextId.toString()}
               </p>
@@ -118,7 +116,7 @@ export const ContractState = () => {
               </svg>
             </div>
             <div>
-              <p className="text-sm font-medium text-green-200">Supply</p>
+              <p className="text-sm font-medium text-green-200">Circulation</p>
               <p className="text-2xl font-bold text-green-100">
                 {formatSupply(contractState.total, BigInt(10000))}
               </p>
@@ -129,19 +127,51 @@ export const ContractState = () => {
       <div className="mt-6 pt-6 border-t border-gray-700">
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
-            <p className="text-sm font-medium text-gray-300 mb-2">
-              Contract Address
-            </p>
-            <p className="text-xs font-mono break-all bg-gray-900 p-3 rounded-lg border border-gray-700">
-              {CONTRACT_ADDRESS}
-            </p>
+            <div>
+              <p className="text-sm font-medium text-gray-300 mb-2">Contract Identifier</p>
+              <div className="flex items-center gap-3">
+                <p className="text-xs font-mono break-all bg-gray-900 p-3 rounded-lg border border-gray-700 flex-1">
+                  {CONTRACT_ADDRESS}
+                </p>
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    const btn = e.currentTarget as HTMLButtonElement;
+                    const original = btn.innerText;
+                    const write = navigator.clipboard?.writeText?.(CONTRACT_ADDRESS);
+                    if (!write) {
+                      btn.innerText = "Copy not supported";
+                      setTimeout(() => (btn.innerText = original), 2000);
+                      return;
+                    }
+                    write
+                      .then(() => {
+                        btn.innerText = "Copied!";
+                        btn.classList.add("bg-green-600", "text-white");
+                        setTimeout(() => {
+                          btn.innerText = original;
+                          btn.classList.remove("bg-green-600", "text-white");
+                        }, 2000);
+                      })
+                      .catch(() => {
+                        btn.innerText = "Failed";
+                        setTimeout(() => (btn.innerText = original), 2000);
+                      });
+                  }}
+                  className="px-3 py-2 bg-gray-800 border border-gray-700 rounded-md text-sm hover:bg-gray-700 transition"
+                  aria-label="Copy contract address"
+                >
+                  Copy address
+                </button>
+              </div>
+            </div>
           </div>
-          <div>
+          {/* <div>
             <p className="text-sm font-medium text-gray-300 mb-2">Base URI</p>
             <p className="text-xs font-mono break-all bg-gray-900 p-3 rounded-lg border border-gray-700">
               {contractState.base_uri}
             </p>
-          </div>
+          </div> */}
         </div>
       </div>
     </div>
