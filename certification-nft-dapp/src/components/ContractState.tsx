@@ -1,179 +1,96 @@
+import { RefreshCw } from "lucide-react";
 import { useContractState } from "@/hooks/useContractState";
-import { CONTRACT_ADDRESS } from "@/lib/constants";
-import { formatSupply } from "@/lib/format";
+import { formatSupply, formatTokenId } from "@/lib/format";
+import { formatAddress } from "@/lib/utils/address";
+import { MAX_SUPPLY } from "@/lib/constants";
 
 export const ContractState = () => {
-  const { state: contractState, loading, error } = useContractState();
-
-  if (loading) {
-    return (
-      <div className="bg-gray-800 rounded-2xl shadow-md border border-gray-700 p-4 sm:p-6">
-        <h2 className="text-xl font-bold mb-4">Contract Overview</h2>
-        <div className="animate-pulse space-y-4">
-          <div className="h-4 bg-gray-700 rounded w-1/4"></div>
-          <div className="h-4 bg-gray-700 rounded w-1/2"></div>
-          <div className="h-4 bg-gray-700 rounded w-1/3"></div>
-        </div>
-      </div>
-    );
-  }
+  const { state, loading, error, refetch } = useContractState();
 
   if (error) {
     return (
-      <div className="bg-gray-800 rounded-2xl shadow-md border border-gray-700 p-4 sm:p-6">
-        <h2 className="text-xl font-bold mb-4">Contract Overview</h2>
-        <div className="p-4 bg-red-900/50 border border-red-700 rounded-lg">
-          <p className="text-sm text-red-300">Error fetching contract data: {error}</p>
+      <div className="bg-red-50 border border-red-200 rounded-lg p-4">
+        <p className="text-red-800 font-medium">Error loading contract state</p>
+        <p className="text-red-600 text-sm mt-1">{error}</p>
+      </div>
+    );
+  }
+
+  if (!state && loading) {
+    return (
+      <div className="bg-white rounded-lg shadow-sm border p-6 animate-pulse">
+        <div className="h-6 bg-gray-200 rounded w-1/3 mb-4"></div>
+        <div className="space-y-3">
+          <div className="h-20 bg-gray-100 rounded"></div>
+          <div className="h-20 bg-gray-100 rounded"></div>
         </div>
       </div>
     );
   }
 
-  if (!contractState) {
-    return (
-      <div className="bg-gray-800 rounded-2xl shadow-md border border-gray-700 p-4 sm:p-6">
-        <h2 className="text-xl font-bold mb-4">Contract Overview</h2>
-        <p className="text-gray-400">Data unavailable</p>
-      </div>
-    );
-  }
+  if (!state) return null;
 
   return (
-    <div className="bg-gray-800 rounded-2xl shadow-md border border-gray-700 p-4 sm:p-6">
-      <h2 className="text-xl font-bold mb-4 text-white">
-        Contract Overview
-      </h2>
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <div className="bg-gradient-to-br from-purple-900/50 to-purple-800/50 p-4 rounded-lg border border-purple-700">
-          <div className="flex items-center gap-3 mb-2">
-            <div className="p-2 bg-purple-600 rounded-lg">
-              <svg
-                className="w-5 h-5 text-white"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                role="img"
-                aria-label="Check mark icon"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-                />
-              </svg>
-            </div>
-            <div>
-              <p className="text-sm font-medium text-purple-200">Total Minted</p>
-              <p className="text-2xl font-bold text-purple-100">
-                {contractState.total.toString()}
-              </p>
-            </div>
-          </div>
+    <div className="bg-white rounded-lg shadow-sm border">
+      <div className="p-6">
+        <div className="flex justify-between items-center mb-6">
+          <h2 className="text-xl font-bold text-gray-900">Contract State</h2>
+          <button
+            type="button"
+            onClick={refetch}
+            disabled={loading}
+            className="p-2 hover:bg-gray-100 rounded-lg transition-colors disabled:opacity-50"
+            aria-label="Refresh"
+          >
+            <RefreshCw
+              className={`w-5 h-5 text-gray-600 ${loading ? "animate-spin" : ""}`}
+            />
+          </button>
         </div>
-        <div className="bg-gradient-to-br from-pink-900/50 to-pink-800/50 p-4 rounded-lg border border-pink-700">
-          <div className="flex items-center gap-3 mb-2">
-            <div className="p-2 bg-pink-600 rounded-lg">
-              <svg
-                className="w-5 h-5 text-white"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                role="img"
-                aria-label="Lightning bolt icon"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M13 10V3L4 14h7v7l9-11h-7z"
-                />
-              </svg>
-            </div>
-            <div>
-              <p className="text-sm font-medium text-pink-200">Next Available Token</p>
-              <p className="text-2xl font-bold text-pink-100">
-                {(contractState.total + BigInt(1)).toString()}
-              </p>
-            </div>
-          </div>
-        </div>
-        <div className="bg-gradient-to-br from-green-900/50 to-green-800/50 p-4 rounded-lg border border-green-700">
-          <div className="flex items-center gap-3 mb-2">
-            <div className="p-2 bg-green-600 rounded-lg">
-              <svg
-                className="w-5 h-5 text-white"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                role="img"
-                aria-label="Lock icon"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
-                />
-              </svg>
-            </div>
-            <div>
-              <p className="text-sm font-medium text-green-200">Circulation</p>
-              <p className="text-2xl font-bold text-green-100">
-                {(BigInt(1000) - contractState.total).toString()}
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div className="mt-6 pt-6 border-t border-gray-700">
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <div>
-            <div>
-              <p className="text-sm font-medium text-white mb-2">Contract Identifier</p>
-              <div className="flex items-center gap-3">
-                <p className="text-xs font-mono break-all bg-gray-900 text-white  border border-gray-700 flex-1">
-                  {CONTRACT_ADDRESS}
-                </p>
-                <button
-                  type="button"
-                  onClick={(e) => {
-                    const btn = e.currentTarget as HTMLButtonElement;
-                    const original = btn.innerText;
-                    const write = navigator.clipboard?.writeText?.(CONTRACT_ADDRESS);
-                    if (!write) {
-                      btn.innerText = "Copy not supported";
-                      setTimeout(() => (btn.innerText = original), 2000);
-                      return;
-                    }
-                    write
-                      .then(() => {
-                        btn.innerText = "Copied!";
-                        btn.classList.add("bg-green-600", "text-white");
-                        setTimeout(() => {
-                          btn.innerText = original;
-                          btn.classList.remove("bg-green-600", "text-white");
-                        }, 2000);
-                      })
-                      .catch(() => {
-                        btn.innerText = "Failed";
-                        setTimeout(() => (btn.innerText = original), 2000);
-                      });
-                  }}
-                  className="px-3 py-2 bg-gray-500 border border-gray-300 rounded-md text-sm hover:bg-gray-700 transition"
-                  aria-label="Copy contract address"
-                >
-                  <span className="text-white">Copy address</span>
-                </button>
-              </div>
-            </div>
-          </div>
-          {/* <div>
-            <p className="text-sm font-medium text-gray-300 mb-2">Base URI</p>
-            <p className="text-xs font-mono break-all bg-gray-900 p-3 rounded-lg border border-gray-700">
-              {contractState.base_uri}
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="bg-gradient-to-br from-blue-50 to-blue-100 p-4 rounded-lg border border-blue-200">
+            <p className="text-sm text-blue-700 font-medium mb-1">
+              Total Supply
             </p>
-          </div> */}
+            <p className="text-2xl font-bold text-blue-900">
+              {formatSupply(state.total, MAX_SUPPLY)}
+            </p>
+            <div className="mt-2 bg-blue-200 rounded-full h-2">
+              <div
+                className="bg-blue-600 h-2 rounded-full transition-all duration-500"
+                style={{
+                  width: `${(Number(state.total) / Number(MAX_SUPPLY)) * 100}%`,
+                }}
+              />
+            </div>
+          </div>
+
+          <div className="bg-gradient-to-br from-purple-50 to-purple-100 p-4 rounded-lg border border-purple-200">
+            <p className="text-sm text-purple-700 font-medium mb-1">
+              Next Token ID
+            </p>
+            <p className="text-2xl font-bold text-purple-900">
+              {formatTokenId(state.nextId)}
+            </p>
+          </div>
+
+          <div className="md:col-span-2 bg-gray-50 p-4 rounded-lg border border-gray-200">
+            <p className="text-sm text-gray-700 font-medium mb-2">Base URI</p>
+            <p className="text-sm text-gray-900 font-mono break-all">
+              {state.base_uri}
+            </p>
+          </div>
+
+          <div className="md:col-span-2 bg-gray-50 p-4 rounded-lg border border-gray-200">
+            <p className="text-sm text-gray-700 font-medium mb-2">Owner</p>
+            <p
+              className="text-sm text-gray-900 font-mono break-all"
+              title={state.owner}
+            >
+              {formatAddress(state.owner, false)}
+            </p>
+          </div>
         </div>
       </div>
     </div>

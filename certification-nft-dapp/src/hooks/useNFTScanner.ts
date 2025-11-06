@@ -53,15 +53,24 @@ export const useNFTScanner = () => {
               metadata = await response.json();
               console.log(
                 `Token ${tokenId} metadata loaded:`,
-                metadata?.name ?? metadata
+                metadata?.name ?? metadata,
               );
             } else {
               metadataError = `HTTP ${response.status}: ${response.statusText}`;
-              console.warn(`Failed to fetch metadata for token ${tokenId}:`, metadataError);
+              console.warn(
+                `Failed to fetch metadata for token ${tokenId}:`,
+                metadataError,
+              );
             }
           } catch (fetchError) {
-            metadataError = fetchError instanceof Error ? fetchError.message : "Unknown fetch error";
-            console.warn(`Error fetching metadata for token ${tokenId}:`, metadataError);
+            metadataError =
+              fetchError instanceof Error
+                ? fetchError.message
+                : "Unknown fetch error";
+            console.warn(
+              `Error fetching metadata for token ${tokenId}:`,
+              metadataError,
+            );
           }
 
           scannedNFTs.push({
@@ -73,8 +82,7 @@ export const useNFTScanner = () => {
           });
 
           // Small delay to avoid overwhelming the API
-          await new Promise(resolve => setTimeout(resolve, 500));
-
+          await new Promise((resolve) => setTimeout(resolve, 500));
         } catch (tokenError) {
           console.error(`Error scanning token ${tokenId}:`, tokenError);
           // Continue scanning other tokens even if one fails
@@ -84,9 +92,9 @@ export const useNFTScanner = () => {
       console.log(`NFT scan complete. Found ${scannedNFTs.length} NFTs`);
       setNfts(scannedNFTs);
       return scannedNFTs;
-
     } catch (err) {
-      const errorMsg = err instanceof Error ? err.message : "Failed to scan NFTs";
+      const errorMsg =
+        err instanceof Error ? err.message : "Failed to scan NFTs";
       console.error("NFT scan failed:", err);
       setError(errorMsg);
       throw err;

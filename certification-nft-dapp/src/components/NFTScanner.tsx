@@ -1,4 +1,11 @@
-import { Search, Loader2, AlertCircle, CheckCircle, ExternalLink, FileText } from "lucide-react";
+import {
+  Search,
+  Loader2,
+  AlertCircle,
+  CheckCircle,
+  ExternalLink,
+  FileText,
+} from "lucide-react";
 import { useState } from "react";
 import { useNFTScanner, type ScannedNFT } from "@/hooks/useNFTScanner";
 import { IPFSCollectionViewer } from "./IPFSCollectionViewer";
@@ -26,7 +33,9 @@ const NFTCard = ({ nft }: { nft: ScannedNFT }) => {
       {nft.metadata ? (
         <div className="space-y-4">
           <div>
-            <h4 className="font-semibold text-purple-300">{nft.metadata.name}</h4>
+            <h4 className="font-semibold text-purple-300">
+              {nft.metadata.name}
+            </h4>
             <p className="text-sm text-gray-400">{nft.metadata.description}</p>
           </div>
 
@@ -48,13 +57,12 @@ const NFTCard = ({ nft }: { nft: ScannedNFT }) => {
 
           {nft.metadata.attributes && nft.metadata.attributes.length > 0 && (
             <div>
-              <p className="text-sm font-medium text-gray-300 mb-2">Attributes</p>
+              <p className="text-sm font-medium text-gray-300 mb-2">
+                Attributes
+              </p>
               <div className="grid grid-cols-2 gap-2">
                 {nft.metadata.attributes.map((attr, index) => (
-                  <div
-                    key={index}
-                    className="bg-gray-900 p-2 rounded text-xs"
-                  >
+                  <div key={index} className="bg-gray-900 p-2 rounded text-xs">
                     <p className="text-gray-500">{attr.trait_type}</p>
                     <p className="font-medium">{attr.value}</p>
                   </div>
@@ -122,7 +130,9 @@ export const NFTScanner = () => {
         </div>
         <div>
           <h2 className="text-xl font-bold">NFT Scanner</h2>
-          <p className="text-sm text-gray-400">Scan all minted certificates on the blockchain</p>
+          <p className="text-sm text-gray-400">
+            Scan all minted certificates on the blockchain
+          </p>
         </div>
       </div>
 
@@ -168,7 +178,8 @@ export const NFTScanner = () => {
       {showResults && nfts.length > 0 && (
         <div className="mb-4">
           <p className="text-sm text-gray-400">
-            Found {nfts.length} NFT{nfts.length !== 1 ? 's' : ''} on the blockchain
+            Found {nfts.length} NFT{nfts.length !== 1 ? "s" : ""} on the
+            blockchain
           </p>
         </div>
       )}
@@ -196,7 +207,9 @@ export const NFTScanner = () => {
             </div>
             <div>
               <h3 className="text-lg font-bold">IPFS Collection Metadata</h3>
-              <p className="text-sm text-gray-400">JSON metadata files from the collection</p>
+              <p className="text-sm text-gray-400">
+                JSON metadata files from the collection
+              </p>
             </div>
           </div>
           <IPFSCollectionViewer />

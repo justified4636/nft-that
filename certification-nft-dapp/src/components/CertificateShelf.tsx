@@ -49,8 +49,12 @@ export const CertificateShelf = () => {
     return (
       <div className="bg-gray-800 rounded-2xl shadow-md border border-gray-700 p-4 sm:p-6">
         <div className="animate-pulse grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+          {/* biome-ignore lint/suspicious/noArrayIndexKey */}
           {[...Array(3)].map((_, i) => (
-            <div key={`loading-${i}`} className="h-64 bg-gray-900 rounded-lg"></div>
+            <div
+              key={`loading-${i}`}
+              className="h-64 bg-gray-900 rounded-lg"
+            ></div>
           ))}
         </div>
       </div>

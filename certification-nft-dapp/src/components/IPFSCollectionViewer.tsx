@@ -12,7 +12,8 @@ export const IPFSCollectionViewer = () => {
   const [files, setFiles] = useState<IPFSFile[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const collectionUrl = "https://peach-fast-clam-38.mypinata.cloud/ipfs/bafybeiedq3l22745663ebspnmozssslvek4roaw77lhn75eq3wipxqbxze/";
+  const collectionUrl =
+    "https://peach-fast-clam-38.mypinata.cloud/ipfs/bafybeiedq3l22745663ebspnmozssslvek4roaw77lhn75eq3wipxqbxze/";
 
   const fetchCollection = async () => {
     setLoading(true);
@@ -50,8 +51,7 @@ export const IPFSCollectionViewer = () => {
           index++;
 
           // Small delay to avoid overwhelming the API
-          await new Promise(resolve => setTimeout(resolve, 200));
-
+          await new Promise((resolve) => setTimeout(resolve, 200));
         } catch (err) {
           // If fetch fails completely, we've likely reached the end
           console.warn(`Error fetching ${index}.json:`, err);
@@ -61,7 +61,9 @@ export const IPFSCollectionViewer = () => {
 
       setFiles(jsonFiles);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to load collection');
+      setError(
+        err instanceof Error ? err.message : "Failed to load collection",
+      );
     } finally {
       setLoading(false);
     }
@@ -90,12 +92,12 @@ export const IPFSCollectionViewer = () => {
           <div className="aspect-square bg-gradient-to-br from-gray-900 to-gray-800 rounded-lg flex items-center justify-center overflow-hidden">
             <img
               src={metadata.image}
-              alt={metadata.name || 'NFT Image'}
+              alt={metadata.name || "NFT Image"}
               className="w-full h-full object-cover"
               onError={(e) => {
                 const target = e.target as HTMLImageElement;
-                target.style.display = 'none';
-                target.nextElementSibling?.classList.remove('hidden');
+                target.style.display = "none";
+                target.nextElementSibling?.classList.remove("hidden");
               }}
             />
             <div className="hidden text-center text-gray-500">
@@ -110,10 +112,7 @@ export const IPFSCollectionViewer = () => {
             <p className="text-sm font-medium text-gray-300 mb-2">Attributes</p>
             <div className="grid grid-cols-2 gap-2">
               {metadata.attributes.map((attr: any, index: number) => (
-                <div
-                  key={index}
-                  className="bg-gray-900 p-2 rounded text-xs"
-                >
+                <div key={index} className="bg-gray-900 p-2 rounded text-xs">
                   <p className="text-gray-500">{attr.trait_type}</p>
                   <p className="font-medium">{attr.value}</p>
                 </div>
@@ -143,7 +142,9 @@ export const IPFSCollectionViewer = () => {
         </div>
         <div>
           <h2 className="text-xl font-bold">IPFS Collection Viewer</h2>
-          <p className="text-sm text-gray-400">Display all JSON metadata files from IPFS collection</p>
+          <p className="text-sm text-gray-400">
+            Display all JSON metadata files from IPFS collection
+          </p>
         </div>
       </div>
 
@@ -174,7 +175,8 @@ export const IPFSCollectionViewer = () => {
       {!loading && !error && files.length > 0 && (
         <div className="mb-4">
           <p className="text-sm text-gray-400">
-            Found {files.length} JSON file{files.length !== 1 ? 's' : ''} in collection
+            Found {files.length} JSON file{files.length !== 1 ? "s" : ""} in
+            collection
           </p>
         </div>
       )}
@@ -182,7 +184,10 @@ export const IPFSCollectionViewer = () => {
       {!loading && !error && files.length > 0 && (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {files.map((file, index) => (
-            <div key={index} className="bg-gray-900 rounded-xl p-6 border border-gray-700 hover:border-purple-500 transition-colors">
+            <div
+              key={index}
+              className="bg-gray-900 rounded-xl p-6 border border-gray-700 hover:border-purple-500 transition-colors"
+            >
               <div className="flex items-start justify-between mb-4">
                 <div>
                   <h3 className="text-lg font-bold">{file.name}</h3>
@@ -205,7 +210,9 @@ export const IPFSCollectionViewer = () => {
               ) : (
                 <div className="text-center py-8">
                   <AlertCircle className="w-12 h-12 text-red-400 mx-auto mb-2" />
-                  <p className="text-sm text-gray-400">Failed to load metadata</p>
+                  <p className="text-sm text-gray-400">
+                    Failed to load metadata
+                  </p>
                   {file.error && (
                     <p className="text-xs text-red-300 mt-1">{file.error}</p>
                   )}
